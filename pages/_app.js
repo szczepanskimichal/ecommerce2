@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
-import Layout from "@/components/Layout";
+import Layout from "../comonents/Layout";
 
 export default function App({
   Component,
