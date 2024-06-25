@@ -4,11 +4,11 @@ import React from "react";
 import { signOut } from "next-auth/react";
 
 const Nav = () => {
-  const inactiveLink = "flex gap-1 p-2 items-center";
+  const inactiveLink = "flex gap-1 p-2";
   const activeLink = inactiveLink + " bg-highlight text-primary rounded-lg";
 
   const router = useRouter();
-  const { pathname } = router;
+  const pathname = router;
 
   async function logout() {
     await router.push("/");
@@ -37,7 +37,7 @@ const Nav = () => {
       <nav className="flex flex-col gap-2">
         <Link
           href={"/"}
-          className={pathname === "/" ? activeLink : inactiveLink}
+          className={router.pathname === "/" ? activeLink : inactiveLink}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,9 @@ const Nav = () => {
         </Link>
         <Link
           href={"/products"}
-          className={pathname.includes("/products") ? activeLink : inactiveLink}
+          className={
+            router.pathname.includes("/products") ? activeLink : inactiveLink
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +80,7 @@ const Nav = () => {
         <Link
           href={"/categories"}
           className={
-            pathname.includes("/categories") ? activeLink : inactiveLink
+            router.pathname.includes("/categories") ? activeLink : inactiveLink
           }
         >
           <svg
@@ -99,7 +101,9 @@ const Nav = () => {
         </Link>
         <Link
           href={"/orders"}
-          className={pathname.includes("/orders") ? activeLink : inactiveLink}
+          className={
+            router.pathname.includes("/orders") ? activeLink : inactiveLink
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

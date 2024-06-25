@@ -31,7 +31,7 @@ export default function Layout({ children }) {
     );
   }
   return (
-    <div className="relative">
+    <div className="realative">
       <div className="bg-gray-200 flex min-h-screen">
         <Nav />
         <div className="bg-gray-50 shadow-xl flex-grow sm:m-5 ml-0 sm:rounded-lg p-3">
