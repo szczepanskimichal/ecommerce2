@@ -1,3 +1,4 @@
+import axios from "axios";
 import ProductForm from "@/components/ProductForm";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -11,7 +12,7 @@ export default function EditProductPage() {
     if (!id) {
       return;
     }
-    axios.get("7api/products" + id).then((response) => {
+    axios.get("/api/products?id=" + id).then((response) => {
       setProductInfo(response.data);
     });
   }, [id]);
