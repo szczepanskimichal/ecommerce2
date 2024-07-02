@@ -11,7 +11,7 @@ export default function EditProductPage() {
     if (!id) {
       return;
     }
-    axios.get("api/products" + id).then((response) => {
+    axios.get("7api/products" + id).then((response) => {
       setProductInfo(response.data);
     });
   }, [id]);
