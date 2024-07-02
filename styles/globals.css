@@ -3,13 +3,51 @@
 @tailwind utilities;
 
 .container {
-	@apply bg-gray-100 rounded-xl p-3 shadow-lg;
+  @apply bg-gray-100 rounded-xl p-3 shadow-lg;
 }
 
 h1 {
-	@apply text-2xl font-semibold text-primary mb-5;
+  @apply text-2xl font-semibold text-primary mb-5;
 }
 
 button {
-	@apply py-2 px-3 rounded-md hover:scale-105 transition delay-100 duration-300 shadow-lg inline-block;
+  @apply py-2 px-3 rounded-md hover:scale-105 transition delay-100 duration-300 shadow-lg inline-block;
+}
+
+.btn-primary {
+  @apply bg-primary;
+}
+
+.btn-secondary {
+  @apply bg-gray-500;
+}
+
+.btn-delete {
+  @apply bg-red-500;
+}
+
+input,
+textarea,
+select {
+  @apply border-2 border-gray-200 rounded-md p-2 focus:outline-none focus:border-highlight mb-2 w-full  shadow-md;
+}
+
+label {
+  @apply text-primary mb-1;
+}
+
+table {
+  @apply w-full mt-5 shadow-md rounded-lg bg-white;
+}
+
+table thead tr td {
+  @apply text-sm text-gray-600 uppercase border-b-2 border-gray-300;
+}
+
+table tr td {
+  @apply p-2;
+}
+
+table button {
+  @apply text-sm px-3 py-2 rounded-md inline-flex gap-1 items-center mr-2 mb-1 sm:mb-0;
 }
