@@ -1,10 +1,8 @@
-import { Timestamp } from "mongodb";
 import mongoose, { Schema, model, models } from "mongoose";
-import { type } from "os";
 
 const ProductSchema = new Schema(
   {
-    tittle: { type: String, required: true },
+    title: { type: String, required: true },
     description: String,
     price: { type: Number, required: true },
     images: [{ type: String }],
@@ -15,5 +13,5 @@ const ProductSchema = new Schema(
     timestamps: true,
   }
 );
-const Product = models.Product || model("Product", ProductSchema);
-export default Product;
+
+export const Product = models.Product || model("Product", ProductSchema);
