@@ -5,9 +5,11 @@ import { withSwal } from "react-sweetalert2";
 
 function Products({ swal }) {
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     fetchProducts();
   }, []);
+
   function fetchProducts() {
     axios.get("/api/products").then((response) => {
       setProducts(response.data);
@@ -31,10 +33,8 @@ function Products({ swal }) {
             <tr key={product._id}>
               <td>{product.title}</td>
               <td>
-                <Link href={`/products/${product._id}`}>
-                  {" "}
-                  <a className="btn-secondary">
-                    {" "}
+                <Link href={"/products/edit/" + product._id}>
+                  <button className="btn-secondary">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -50,7 +50,7 @@ function Products({ swal }) {
                       />
                     </svg>
                     Edit
-                  </a>
+                  </button>
                 </Link>
                 <button className="btn-delete">
                   <svg
