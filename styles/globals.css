@@ -15,7 +15,7 @@ button {
 }
 
 .btn-primary {
-  @apply bg-primary;
+  @apply text-white bg-primary;
 }
 
 .btn-secondary {
