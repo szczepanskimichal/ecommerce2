@@ -1,6 +1,8 @@
 import { withSwal } from "react-sweetalert2";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { set } from "mongoose";
+// import { reverse } from "dns";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -8,7 +10,15 @@ function Categories({ swal }) {
   const [categories, setCategories] = useState([]);
   const [parentCategory, setParentCategory] = useState("");
   const [properties, setProperties] = useState([]);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
+  function fetchCategories() {
+    axios.get("/api/categories").then((response) => {
+      setCategories(response.data);
+    });
+  }
   async function saveCategory(e) {
     e.preventDefault();
     const data = {
@@ -29,12 +39,45 @@ function Categories({ swal }) {
     setName("");
     setParentCategory("");
     setProperties([]);
+    fetchCategories(); // Refresh the list of categories, bedzie sie odzmieniac odrazu po zmianie kategorii
   }
 
   function addProperty() {
     setProperties((prev) => {
       return [...prev, { name: "", values: "" }];
     });
+  }
+
+  function editCategory(category) {
+    setEditedCategory(category);
+    setName(category.name);
+    setParentCategory(category.parentCategory?._id);
+    setProperties(
+      category.properties.map(({ name, values }) => ({
+        name,
+        values: values.join(","),
+      }))
+    );
+  }
+
+  function deleteCategory(category) {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: `Do you want to delete category ${category.name}?`,
+        showCancelButton: true,
+        CancelButtonText: "Cancel",
+        confirmButtonText: "Yes, Delete",
+        confirmButtonColor: "#d55",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          const { _id } = category;
+          // await axios.delete(`/api/categories/${_id}`);
+          await axios.delete("api/categories?_id=" + _id);
+        }
+      });
   }
 
   function removeProperty(indexToRemove) {
@@ -145,6 +188,40 @@ function Categories({ swal }) {
           )}
         </div>
       </form>
+      {!editedCategory && (
+        <table>
+          <thead>
+            <tr>
+              <td>Category name</td>
+              <td>Parent category</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <tr key={category.id}>
+                  <td>{category.name}</td>
+                  <td>{category?.parentCategory?.name}</td>
+                  <td>
+                    <button
+                      className="btn-secondary"
+                      onClick={() => editCategory(category)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => deleteCategory(category)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 }
