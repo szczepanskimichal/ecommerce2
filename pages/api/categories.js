@@ -1,58 +1,37 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import Category from "@/models/Category";
+import { Category } from "@/models/Category";
 
-export default async function handler(req, res) {
-  await mongooseConnect();
+export default async function handle(req, res) {
   const { method } = req;
+  await mongooseConnect();
 
   if (method === "GET") {
-    try {
-      const categories = await Category.find().populate("parent");
-      res.json(categories);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch categories" });
-    }
+    res.json(await Category.find().populate("parent"));
   }
 
   if (method === "POST") {
-    try {
-      const { name, parentCategory, properties } = req.body;
+    const { name, parentCategory, properties } = req.body;
 
-      const categoryDoc = await Category.create({
-        name,
-        parent: parentCategory || undefined,
-        properties,
-      });
-      res.json(categoryDoc);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to create category" });
-    }
+    const categoryDoc = await Category.create({
+      name,
+      parent: parentCategory || undefined,
+      properties,
+    });
+    res.json(categoryDoc);
   }
 
   if (method === "PUT") {
-    try {
-      const { name, parentCategory, properties, _id } = req.body;
-      const categoryDoc = await Category.updateOne(
-        { _id },
-        {
-          name,
-          parent: parentCategory || undefined,
-          properties,
-        }
-      );
-      res.json(categoryDoc);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to update category" });
-    }
+    const { name, parentCategory, properties, _id } = req.body;
+    const categoryDoc = await Category.updateOne(
+      { _id },
+      { name, parent: parentCategory || undefined, properties }
+    );
+    res.json(categoryDoc);
   }
 
   if (method === "DELETE") {
-    try {
-      const { _id } = req.body;
-      await Category.deleteOne({ _id });
-      res.json(true);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to delete category" });
-    }
+    const { _id } = req.query;
+    await Category.deleteOne({ _id });
+    res.json(true);
   }
 }
