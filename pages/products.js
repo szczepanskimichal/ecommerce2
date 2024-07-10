@@ -16,6 +16,26 @@ function Products({ swal }) {
     });
   }
 
+  function deleteProduct(product) {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: `Do you want to delete ${product.title}?`,
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Yes, Delete!",
+        confirmButtonColor: "#d55",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          const { _id } = product;
+          await axios.delete("/api/products?_id=" + _id);
+          fetchProducts();
+        }
+      });
+  }
+
   return (
     <div>
       <Link href={"/products/new"}>
@@ -52,7 +72,10 @@ function Products({ swal }) {
                     Edit
                   </button>
                 </Link>
-                <button className="btn-delete">
+                <button
+                  className="btn-delete"
+                  onClick={() => deleteProduct(product)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
