@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-// import Spinner from "./Spinner";
+import Spinner from "./spinner";
 
 export default function ProductForm({
   title: existingTitle,
