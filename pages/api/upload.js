@@ -52,7 +52,7 @@ import mime from "mime-types";
 import { mongooseConnect } from "@/lib/mongoose";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-const bucketName = "michal-next-ecommerce";
+const bucketName = "michal-next-ecommerce"; //// to kurwa baranie
 
 export default async function handle(req, res) {
   await mongooseConnect();
