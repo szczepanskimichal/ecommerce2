@@ -58,14 +58,18 @@ export default function ProductForm({
       for (const file of files) {
         data.append("file", file);
       }
-      const response = await axios.post("/api/upload", data);
-      setImages((oldImages) => {
-        return [...oldImages, ...response.data.links];
-      });
-      setIsLoading(false);
+      try {
+        const response = await axios.post("/api/upload", data);
+        setImages((oldImages) => {
+          return [...oldImages, ...response.data.links];
+        });
+      } catch (error) {
+        console.error("Updating went wrong", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   }
-
   const propertiesToFill = [];
   if (categories.length > 0 && category) {
     let catInfo = categories.find(({ _id }) => _id === category);
