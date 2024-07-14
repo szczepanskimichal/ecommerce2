@@ -51,6 +51,10 @@ export default function ProductForm({
     router.push("/products");
   }
 
+  function updateImagesOrder(images) {
+    setImages(images);
+  }
+
   async function uploadImages(e) {
     const files = e.target?.files;
     if (files?.length > 0) {
@@ -65,10 +69,6 @@ export default function ProductForm({
       });
       setIsLoading(false);
     }
-  }
-
-  function updateImagesOrder(images) {
-    setImages(images);
   }
 
   function setProductProp(propName, value) {
