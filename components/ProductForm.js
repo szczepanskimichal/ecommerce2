@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Spinner from "./spinner";
+import { ReactSortable } from "react-sortablejs";
 
 export default function ProductForm({
   title: existingTitle,
@@ -58,18 +59,26 @@ export default function ProductForm({
       for (const file of files) {
         data.append("file", file);
       }
-      try {
-        const response = await axios.post("/api/upload", data);
-        setImages((oldImages) => {
-          return [...oldImages, ...response.data.links];
-        });
-      } catch (error) {
-        console.error("Updating went wrong", error);
-      } finally {
-        setIsLoading(false);
-      }
+      const response = await axios.post("/api/upload", data);
+      setImages((oldImages) => {
+        return [...oldImages, ...response.data.links];
+      });
+      setIsLoading(false);
     }
   }
+
+  function updateImagesOrder(images) {
+    setImages(images);
+  }
+
+  function setProductProp(propName, value) {
+    setProductProperties((prev) => {
+      const newProductProps = { ...prev };
+      newProductProps[propName] = value;
+      return newProductProps;
+    });
+  }
+
   const propertiesToFill = [];
   if (categories.length > 0 && category) {
     let catInfo = categories.find(({ _id }) => _id === category);
@@ -106,7 +115,10 @@ export default function ProductForm({
         propertiesToFill.map((property) => (
           <>
             <label className="capitalize">{property.name}</label>
-            <select>
+            <select
+              value={productProperties[property.name]}
+              onChange={(e) => setProductProp(property.name, e.target.value)}
+            >
               <option value="">None</option>
               {property.values.map((value, index) => (
                 <option key={index} value={value}>
@@ -126,15 +138,21 @@ export default function ProductForm({
             <Spinner />
           </div>
         )}
-        {images?.length > 0 &&
-          images.map((link) => (
-            <div
-              key={link}
-              className="h-24 bg-gray-100 flex items-center justify-center rounded-md p-1 border border-gray-100 shadow-md"
-            >
-              <img src={link} className="rounded-lg h-full w-full" alt="" />
-            </div>
-          ))}
+        <ReactSortable
+          className="flex flex-wrap gap-2"
+          list={images}
+          setList={updateImagesOrder}
+        >
+          {images?.length > 0 &&
+            images.map((link) => (
+              <div
+                key={link}
+                className="h-24 bg-gray-100 flex items-center justify-center rounded-md p-1 border border-gray-100 shadow-md"
+              >
+                <img src={link} className="rounded-lg h-full w-full" alt="" />
+              </div>
+            ))}
+        </ReactSortable>
         <label className="w-24 h-24 cursor-pointer rounded-lg border flex flex-col items-center justify-center gap-1 text-primary bg-gray-100 shadow-md">
           <svg
             xmlns="http://www.w3.org/2000/svg"
