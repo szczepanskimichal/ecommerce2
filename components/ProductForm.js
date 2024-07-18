@@ -55,6 +55,10 @@ export default function ProductForm({
     setImages(images);
   }
 
+  function removeImage(removedImage) {
+    setImages(images.filter((image) => image !== removedImage));
+  }
+
   async function uploadImages(e) {
     const files = e.target?.files;
     if (files?.length > 0) {
@@ -147,9 +151,26 @@ export default function ProductForm({
             images.map((link) => (
               <div
                 key={link}
-                className="h-24 bg-gray-100 flex items-center justify-center rounded-md p-1 border border-gray-100 shadow-md"
+                className="h-24 bg-gray-100 flex items-center justify-center rounded-md p-1 border border-gray-100 shadow-md relative group"
               >
                 <img src={link} className="rounded-lg h-full w-full" alt="" />
+                <div
+                  onClick={() => removeImage(link)}
+                  className="opacity-0 group-hover:opacity-100 transition-all delay-100 duration-300 absolute -top-2 -right-2 bg-gray-100 border border-gray-300 rounded-full p-1 size-6 flex items-center justify-center text-gray-500 cursor-pointer"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
             ))}
         </ReactSortable>
