@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { withSwal } from "react-sweetalert2";
+// import Swal from "react-sweetalert2";
 
 function Products({ swal }) {
   const [products, setProducts] = useState([]);
